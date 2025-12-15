@@ -26,18 +26,15 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
     public List<Category> getAllCategories()
     {
         List<Category> categories = new ArrayList<>();
-        String query = " SELECT * FROM categories";
+        String sql = "SELECT * FROM categories";
 
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement(query);
+             PreparedStatement statement = connection.prepareStatement(sql);
         ResultSet resultSet = statement.executeQuery()) {
 
             while (resultSet.next()) {
-                int categoryId = resultSet.getInt("category_id");
-                String name = resultSet.getString("name");
-                String desc = resultSet.getString("description");
-
-                categories.add(new Category(categoryId, name, desc));
+                Category category = mapRow(resultSet);
+                categories.add(category);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -49,14 +46,49 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
     @Override
     public Category getById(int categoryId)
     {
-        // get category by id
+        String sql = "SELECT * FROM categories WHERE category_id = ? ORDER BY category_id";
+
+        try (Connection connection = dataSource.getConnection();
+        PreparedStatement statement = connection.prepareStatement(sql)
+        ){
+            statement.setInt(1, categoryId);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return mapRow(resultSet);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return null;
     }
 
     @Override
     public Category create(Category category)
     {
-        // create a new category
+        String sql = "INSERT INTO categories(name, description) VALUES (?, ?)";
+
+        try (Connection connection = dataSource.getConnection();
+        PreparedStatement statement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
+            statement.setString(1, category.getName());
+            statement.setString(2, category.getDescription());
+
+            int rowsAffected = statement.executeUpdate();
+
+            if (rowsAffected > 0) {
+                ResultSet generatedKeys = statement.getGeneratedKeys();
+
+                if (generatedKeys.next()) {
+                    int orderId = generatedKeys.getInt(1);
+
+                    return getById(orderId);
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return null;
     }
 
