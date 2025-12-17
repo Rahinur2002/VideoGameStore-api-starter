@@ -7,4 +7,5 @@ public interface ProfileDao
 {
     Profile create(Profile profile);
     Profile getByUserId(int userId);
+    void updateProfile(int userId, Profile profile);
 }
