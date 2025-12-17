@@ -42,11 +42,13 @@ public class ProfileController {
 
     @PutMapping("")
     @PreAuthorize("hasRole('ROLE_USER')")
-    public void updateProfile(Principal principal, @RequestBody Profile profile){
+    public Profile updateProfile(Principal principal, @RequestBody Profile profile){
         String username = principal.getName();
         User user = userDao.getByUserName(username);
 
         profileDao.updateProfile(user.getId(), profile);
+
+        return profile;
 
     }
 }
