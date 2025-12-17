@@ -8,14 +8,15 @@ public class OrderItemLine {
     private int product_id;
     private BigDecimal sales_price;
     private int quantity;
+    private BigDecimal discount;
 
-
-    public OrderItemLine(int order_line_item_id, int order_id, int product_id, BigDecimal sales_price, int quantity) {
+    public OrderItemLine(int order_line_item_id, int order_id, int product_id, BigDecimal sales_price, int quantity, BigDecimal discount) {
         this.order_line_item_id = order_line_item_id;
         this.order_id = order_id;
         this.product_id = product_id;
         this.sales_price = sales_price;
         this.quantity = quantity;
+        this.discount = discount;
     }
 
     public int getOrder_line_item_id() {
@@ -58,4 +59,11 @@ public class OrderItemLine {
         this.quantity = quantity;
     }
 
+    public BigDecimal getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(BigDecimal discount) {
+        this.discount = discount;
+    }
 }
