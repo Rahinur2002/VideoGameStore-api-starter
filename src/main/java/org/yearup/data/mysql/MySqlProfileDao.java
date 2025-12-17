@@ -47,7 +47,8 @@ public class MySqlProfileDao extends MySqlDaoBase implements ProfileDao
         }
     }
 
-    public User getByUserId (int userId) {
+    @Override
+    public Profile getByUserId (int userId) {
         String sql = "SELECT * FROM profiles WHERE user_id = ?";
 
         try (Connection connection = dataSource.getConnection();
@@ -55,14 +56,18 @@ public class MySqlProfileDao extends MySqlDaoBase implements ProfileDao
             statement.setInt(1, userId);
 
             try (ResultSet resultSet = statement.executeQuery()) {
-                while (resultSet.next()){
-                    User user = new User(
-                      resultSet.getInt("user_id"),
-                      resultSet.getString("first_name"),
-                            resultSet.getString("last_name"),
+                if (resultSet.next()){
+                int userID = resultSet.getInt("user_id");
+                String firstName = resultSet.getString("first_name");
+                String lastName = resultSet.getString("last_name");
+                String phone = resultSet.getString("phone");
+                String email = resultSet.getString("email");
+                String address = resultSet.getString("address");
+                String city = resultSet.getString("city");
+                String states = resultSet.getString("state");
+                String zip = resultSet.getString("zip");
 
-
-                    )
+                return new Profile(userID, firstName, lastName, phone, email, address, city, states, zip);
                 }
 
             }
@@ -70,7 +75,7 @@ public class MySqlProfileDao extends MySqlDaoBase implements ProfileDao
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
+        return null;
     }
 
 }
