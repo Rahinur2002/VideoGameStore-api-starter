@@ -22,15 +22,15 @@ public class MySqlOrderLineItemDao extends MySqlDaoBase implements OrderLineItem
     }
 
     @Override
-    public OrderItemLine createOrderLineItem(int order, OrderItemLine orderItemLine, int product) {
+    public OrderItemLine createOrderLineItem(OrderItemLine orderItemLine) {
         String sql = "INSERT INTO order_line_items " +
                 "(order_id, product_id, sales_price, quantity, discount) " +
                 "VALUES (?, ?, ?, ?, ?)";
 
         try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)){
-            statement.setInt(1, order);
-            statement.setInt(2, product);
+            statement.setInt(1, orderItemLine.getOrder_id());
+            statement.setInt(2, orderItemLine.getProduct_id());
             statement.setBigDecimal(3, orderItemLine.getSales_price());
             statement.setInt(4, orderItemLine.getQuantity());
             statement.setBigDecimal(5, orderItemLine.getDiscount());

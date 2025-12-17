@@ -53,13 +53,15 @@ public class OrderService {
             OrderItemLine orderItemLine = new OrderItemLine(
                     0,
                     orderid,
-                    cartItem.getProduct().getProductId(),
+                    cartItem.getProductId(),
                     cartItem.getProduct().getPrice(),
                     cartItem.getQuantity(),
                     cartItem.getDiscountPercent()
             );
 
-            orderLineItemDao.createOrderLineItem(orderid, orderItemLine, orderItemLine.getOrder_id());
+            int productId = cartItem.getProductId();;
+
+            orderLineItemDao.createOrderLineItem(orderItemLine);
         }
 
         shoppingCartDao.deleteProduct(userId);
