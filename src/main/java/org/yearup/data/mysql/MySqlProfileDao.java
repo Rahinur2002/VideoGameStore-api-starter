@@ -78,4 +78,8 @@ public class MySqlProfileDao extends MySqlDaoBase implements ProfileDao
         return null;
     }
 
+    public void updateProfile() {
+
+    }
+
 }
