@@ -3,12 +3,10 @@ package org.yearup.data.mysql;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.yearup.data.ShoppingCartDao;
-import org.yearup.models.Category;
-import org.yearup.models.Product;
-import org.yearup.models.ShoppingCart;
-import org.yearup.models.ShoppingCartItem;
+import org.yearup.models.*;
 
 import javax.sql.DataSource;
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -26,7 +24,7 @@ public class MySqlShoppingDao extends MySqlDaoBase implements ShoppingCartDao {
     @Override
     public ShoppingCart getByUserId(int userId) {
         String sql = "SELECT s.product_id, s.quantity, " +
-                "p.name, p.price, p.category_id, p.description, p.subcategory, p.stock, p.featured, p.image_url " +
+                "p.name, p.price, p.category_id, p.description, p.subcategory, p.stock, p.image_url, p.featured " +
                 "FROM shopping_cart s " +
                 "JOIN products p ON p.product_id = s.product_id " +
                 "WHERE s.user_id = ?";
@@ -52,6 +50,7 @@ public class MySqlShoppingDao extends MySqlDaoBase implements ShoppingCartDao {
                     ShoppingCartItem item = new ShoppingCartItem();
                     item.setProduct(product);
                     item.setQuantity(resultSet.getInt("quantity"));
+                    item.setDiscountPercent(BigDecimal.ZERO);
                     cart.add(item);
                 }
             }
@@ -59,6 +58,41 @@ public class MySqlShoppingDao extends MySqlDaoBase implements ShoppingCartDao {
             e.printStackTrace();
         }
         return cart;
+    }
+
+    @Override
+    public ShoppingCart addToCart(int userId, int productId){
+        String sql = "INSERT INTO shopping_cart(user_id, product_id, quantity) VALUES (?, ?, 1)";
+
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement insertStatement = connection.prepareStatement(sql)) {
+            insertStatement.setInt(1, userId);
+            insertStatement.setInt(2, productId);
+            insertStatement.executeUpdate();
+        } catch (SQLException e) {
+           e.printStackTrace();
+        }
+        return getByUserId(userId);
+    }
+
+    @Override
+    public void updateCart(int userId, int productId) {
+        String sql = "UPDATE shopping_cart SET quantity = quantity + 1 WHERE user_id = ? AND product_id = ?";
+        try ( Connection connection = dataSource.getConnection();
+          PreparedStatement updateStatement = connection.prepareStatement(sql)) {
+
+            updateStatement.setInt(1, userId);
+            updateStatement.setInt(2, productId);
+            updateStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void deleteProduct(int userId, int productId) {
+        String sql = ""
     }
 }
 

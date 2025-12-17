@@ -8,7 +8,9 @@ import org.springframework.web.server.ResponseStatusException;
 import org.yearup.data.ProductDao;
 import org.yearup.data.ShoppingCartDao;
 import org.yearup.data.UserDao;
+import org.yearup.models.Product;
 import org.yearup.models.ShoppingCart;
+import org.yearup.models.ShoppingCartItem;
 import org.yearup.models.User;
 
 import java.security.Principal;
@@ -45,9 +47,8 @@ public class ShoppingCartController
             User user = userDao.getByUserName(userName);
             int userId = user.getId();
 
-            shoppingCartDao.getByUserId(userId);
+           return shoppingCartDao.getByUserId(userId);
             // use the shoppingcartDao to get all items in the cart and return the cart
-            return null;
         }
         catch(Exception e)
         {
@@ -57,18 +58,43 @@ public class ShoppingCartController
 
     // add a POST method to add a product to the cart - the url should be
     // https://localhost:8080/cart/products/15 (15 is the productId to be added
-    @PostMapping("/products/{id}")
+    @PostMapping("/products/{productId}")
     @PreAuthorize("hasRole('ROLE_USER')")
-    public ShoppingCart addProductToCart(){
+    public ShoppingCart addProductToCart(@PathVariable int productId, Principal principal){
+        String username = principal.getName();
+        User user = userDao.getByUserName(username);
 
+        Product product = productDao.getById(productId);
+           if(product == null) {
+               throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found.");
+           }
+        return shoppingCartDao.addToCart(user.getId(), productId);
     }
 
     // add a PUT method to update an existing product in the cart - the url should be
     // https://localhost:8080/cart/products/15 (15 is the productId to be updated)
     // the BODY should be a ShoppingCartItem - quantity is the only value that will be updated
+    @PutMapping("/products/{productId}")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public void updateCart (@PathVariable int productId, Principal principal) {
+        String username = principal.getName();
+        User user = userDao.getByUserName(username);
+
+        Product product = productDao.getById(productId);
+        if(product == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found.");
+        }
+        shoppingCartDao.updateCart(user.getId(), productId);
+    }
 
 
     // add a DELETE method to clear all products from the current users cart
     // https://localhost:8080/cart
+    @DeleteMapping("{productId}")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public void deleteAllProduct(@PathVariable int productId){
+
+    }
+
 
 }
