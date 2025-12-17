@@ -79,7 +79,7 @@ public class MySqlProfileDao extends MySqlDaoBase implements ProfileDao
     }
 
     public void updateProfile(int userId, Profile profile) {
-        String sql =
+        String sql = ""
     }
 
 }
