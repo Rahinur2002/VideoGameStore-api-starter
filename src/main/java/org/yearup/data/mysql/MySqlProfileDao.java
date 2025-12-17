@@ -79,7 +79,8 @@ public class MySqlProfileDao extends MySqlDaoBase implements ProfileDao
     }
 
     public void updateProfile(int userId, Profile profile) {
-        String sql = ""
+        String sql = "UPDATE profiles SET first_name = ?, last_name = ?, phone = ?, email = ?, address = ?, " +
+                "city = ?, state = ?, zip = ? WHERE user_id = ?";
     }
 
 }
