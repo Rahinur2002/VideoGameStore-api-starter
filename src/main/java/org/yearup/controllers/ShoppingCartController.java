@@ -82,7 +82,7 @@ public class ShoppingCartController
     // the BODY should be a ShoppingCartItem - quantity is the only value that will be updated
     @PutMapping("/products/{productId}")
     @PreAuthorize("hasRole('ROLE_USER')")
-    public void updateCart (@PathVariable int productId,@RequestBody ShoppingCartItem item, Principal principal) {
+    public ShoppingCart updateCart (@PathVariable int productId,@RequestBody ShoppingCartItem item, Principal principal) {
         String username = principal.getName();
         User user = userDao.getByUserName(username);
 
@@ -93,6 +93,7 @@ public class ShoppingCartController
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found.");
         }
         shoppingCartDao.updateCart(user.getId(), productId, item.getQuantity());
+       return shoppingCartDao.getByUserId(user.getId());
     }
 
 
