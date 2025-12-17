@@ -1,8 +1,10 @@
 package org.yearup.data.mysql;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.yearup.models.Profile;
 import org.yearup.data.ProfileDao;
+import org.yearup.models.User;
 
 import javax.sql.DataSource;
 import java.sql.*;
@@ -10,6 +12,7 @@ import java.sql.*;
 @Component
 public class MySqlProfileDao extends MySqlDaoBase implements ProfileDao
 {
+    @Autowired
     public MySqlProfileDao(DataSource dataSource)
     {
         super(dataSource);
@@ -42,6 +45,32 @@ public class MySqlProfileDao extends MySqlDaoBase implements ProfileDao
         {
             throw new RuntimeException(e);
         }
+    }
+
+    public User getByUserId (int userId) {
+        String sql = "SELECT * FROM profiles WHERE user_id = ?";
+
+        try (Connection connection = dataSource.getConnection();
+        PreparedStatement statement = connection.prepareStatement(sql)){
+            statement.setInt(1, userId);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()){
+                    User user = new User(
+                      resultSet.getInt("user_id"),
+                      resultSet.getString("first_name"),
+                            resultSet.getString("last_name"),
+
+
+                    )
+                }
+
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
     }
 
 }

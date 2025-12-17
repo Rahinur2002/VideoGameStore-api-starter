@@ -47,6 +47,9 @@ public class ShoppingCartController
             User user = userDao.getByUserName(userName);
             int userId = user.getId();
 
+            if (user == null)
+                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found.");
+
            return shoppingCartDao.getByUserId(userId);
             // use the shoppingcartDao to get all items in the cart and return the cart
         }
@@ -60,11 +63,14 @@ public class ShoppingCartController
     // https://localhost:8080/cart/products/15 (15 is the productId to be added
     @PostMapping("/products/{productId}")
     @PreAuthorize("hasRole('ROLE_USER')")
+    @ResponseStatus(HttpStatus.CREATED)
     public ShoppingCart addProductToCart(@PathVariable int productId, Principal principal){
         String username = principal.getName();
         User user = userDao.getByUserName(username);
 
         Product product = productDao.getById(productId);
+        if (user == null)
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found.");
            if(product == null) {
                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found.");
            }
@@ -76,24 +82,32 @@ public class ShoppingCartController
     // the BODY should be a ShoppingCartItem - quantity is the only value that will be updated
     @PutMapping("/products/{productId}")
     @PreAuthorize("hasRole('ROLE_USER')")
-    public void updateCart (@PathVariable int productId, Principal principal) {
+    public void updateCart (@PathVariable int productId,@RequestBody ShoppingCartItem item, Principal principal) {
         String username = principal.getName();
         User user = userDao.getByUserName(username);
 
         Product product = productDao.getById(productId);
+        if (user == null)
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found.");
         if(product == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found.");
         }
-        shoppingCartDao.updateCart(user.getId(), productId);
+        shoppingCartDao.updateCart(user.getId(), productId, item.getQuantity());
     }
 
 
     // add a DELETE method to clear all products from the current users cart
     // https://localhost:8080/cart
-    @DeleteMapping("{productId}")
+    @DeleteMapping()
     @PreAuthorize("hasRole('ROLE_USER')")
-    public void deleteAllProduct(@PathVariable int productId){
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void deleteAllProduct(Principal principal){
+        String username = principal.getName();
+        User user = userDao.getByUserName(username);
+        if (user == null)
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found.");
 
+        shoppingCartDao.deleteProduct(user.getId());
     }
 
 

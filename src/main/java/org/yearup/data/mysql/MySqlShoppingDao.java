@@ -62,37 +62,69 @@ public class MySqlShoppingDao extends MySqlDaoBase implements ShoppingCartDao {
 
     @Override
     public ShoppingCart addToCart(int userId, int productId){
-        String sql = "INSERT INTO shopping_cart(user_id, product_id, quantity) VALUES (?, ?, 1)";
+        String updateSql =
+                "UPDATE shopping_cart SET quantity = quantity + 1 WHERE user_id = ? AND product_id = ?";
+        String insertSql =
+                "INSERT INTO shopping_cart (user_id, product_id, quantity) VALUES (?, ?, 1)";
 
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement insertStatement = connection.prepareStatement(sql)) {
-            insertStatement.setInt(1, userId);
-            insertStatement.setInt(2, productId);
-            insertStatement.executeUpdate();
-        } catch (SQLException e) {
-           e.printStackTrace();
+        try (Connection connection = dataSource.getConnection())
+        {
+            try (PreparedStatement updateStatement = connection.prepareStatement(updateSql))
+            {
+                updateStatement.setInt(1, userId);
+                updateStatement.setInt(2, productId);
+
+                int rowsUpdated = updateStatement.executeUpdate();
+
+                if (rowsUpdated == 0)
+                {
+                    try (PreparedStatement insertStatement= connection.prepareStatement(insertSql))
+                    {
+                        insertStatement.setInt(1, userId);
+                        insertStatement.setInt(2, productId);
+                        insertStatement.executeUpdate();
+                    }
+                }
+            }
         }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+
         return getByUserId(userId);
     }
 
     @Override
-    public void updateCart(int userId, int productId) {
-        String sql = "UPDATE shopping_cart SET quantity = quantity + 1 WHERE user_id = ? AND product_id = ?";
-        try ( Connection connection = dataSource.getConnection();
-          PreparedStatement updateStatement = connection.prepareStatement(sql)) {
+    public void updateCart(int userId, int productId, int quantity) {
+        String sql = "UPDATE shopping_cart SET quantity = ? WHERE user_id = ? AND product_id = ?";
 
-            updateStatement.setInt(1, userId);
-            updateStatement.setInt(2, productId);
-            updateStatement.executeUpdate();
-
-        } catch (SQLException e) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(sql))
+        {
+            stmt.setInt(1, quantity);
+            stmt.setInt(2, userId);
+            stmt.setInt(3, productId);
+            stmt.executeUpdate();
+        }
+        catch (SQLException e)
+        {
             e.printStackTrace();
         }
     }
 
     @Override
-    public void deleteProduct(int userId, int productId) {
-        String sql = ""
+    public void deleteProduct(int userId) {
+        String sql = "DELETE FROM shopping_cart WHERE user_id = ?";
+
+        try (Connection connection = dataSource.getConnection();
+        PreparedStatement statement = connection.prepareStatement(sql)){
+            statement.setInt(1, userId);
+
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
 
