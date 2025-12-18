@@ -8,7 +8,6 @@ import org.springframework.web.server.ResponseStatusException;
 import org.yearup.data.ProfileDao;
 import org.yearup.data.UserDao;
 import org.yearup.models.Category;
-import org.yearup.models.Product;
 import org.yearup.models.Profile;
 import org.yearup.models.User;
 
