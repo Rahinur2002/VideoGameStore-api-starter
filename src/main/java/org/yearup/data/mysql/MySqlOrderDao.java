@@ -41,7 +41,7 @@ public class MySqlOrderDao extends MySqlDaoBase implements OrderDao {
 
                 if (generatedKeys.next()) {
                     int orderId = generatedKeys.getInt(1);
-                    order.setOrder_id(orderId);
+                    order.setOrderid(orderId);
 
                     return order;
                     }

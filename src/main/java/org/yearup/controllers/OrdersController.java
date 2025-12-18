@@ -25,11 +25,12 @@ public class OrdersController {
     @PostMapping("")
     @PreAuthorize("hasRole('ROLE_USER')")
     @ResponseStatus(HttpStatus.CREATED)
-    public void checkout(Principal principal) {
+    public Order checkout(Principal principal) {
         Order orderCreated = orderService.checkout(principal.getName());
 
         if (orderCreated == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "checkout failed");
         }
+        return orderCreated;
     }
 }

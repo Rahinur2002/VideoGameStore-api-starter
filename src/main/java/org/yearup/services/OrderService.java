@@ -47,7 +47,7 @@ public class OrderService {
         Order orderCreated = orderDao.createOrder(userId, order);
         if(orderCreated == null) return null;
 
-        int orderid = orderCreated.getOrder_id();
+        int orderid = orderCreated.getOrderid();
 
         for (ShoppingCartItem cartItem : cart.getItems().values()) {
             OrderItemLine orderItemLine = new OrderItemLine(
@@ -67,5 +67,6 @@ public class OrderService {
         shoppingCartDao.deleteProduct(userId);
         return orderCreated;
     }
+
 
 }
