@@ -59,7 +59,7 @@ public class OrderService {
                     cartItem.getDiscountPercent()
             );
 
-            int productId = cartItem.getProductId();;
+            int productId = cartItem.getProductId();
 
             orderLineItemDao.createOrderLineItem(orderItemLine);
         }
