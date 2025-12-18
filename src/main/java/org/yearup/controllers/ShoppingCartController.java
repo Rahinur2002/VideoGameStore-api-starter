@@ -33,6 +33,7 @@ public class ShoppingCartController
         this.productDao = productDao;
     }
 
+    //Gets all the items of the user in the cart
     @GetMapping("")
     @PreAuthorize("hasRole('ROLE_USER')")
     public ShoppingCart getCart(Principal principal)
@@ -48,7 +49,6 @@ public class ShoppingCartController
                 throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found.");
 
            return shoppingCartDao.getByUserId(userId);
-            // use the shoppingcartDao to get all items in the cart and return the cart
         }
         catch(Exception e)
         {
