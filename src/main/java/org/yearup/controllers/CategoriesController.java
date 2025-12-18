@@ -87,7 +87,6 @@ public class CategoriesController
     }
 
     //call this method for a PUT (update) action - the url path must include the categoryId
-    //only an ADMIN can call this function
     @PutMapping("{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void updateCategory(@PathVariable int id, @RequestBody Category category)
