@@ -28,6 +28,7 @@ public class MySqlShoppingDao extends MySqlDaoBase implements ShoppingCartDao {
                 "FROM shopping_cart s " +
                 "JOIN products p ON p.product_id = s.product_id " +
                 "WHERE s.user_id = ?";
+        //Empty cart
         ShoppingCart cart = new ShoppingCart();
 
         try (Connection connection = dataSource.getConnection();
@@ -51,6 +52,7 @@ public class MySqlShoppingDao extends MySqlDaoBase implements ShoppingCartDao {
                     item.setProduct(product);
                     item.setQuantity(resultSet.getInt("quantity"));
                     item.setDiscountPercent(BigDecimal.ZERO);
+                    //adding to the empty cart
                     cart.add(item);
                 }
             }
