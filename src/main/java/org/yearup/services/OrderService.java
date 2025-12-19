@@ -1,7 +1,9 @@
 package org.yearup.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 import org.yearup.data.*;
 import org.yearup.models.*;
 
@@ -26,14 +28,14 @@ public class OrderService {
 
     public Order checkout(String username){
         User user = userDao.getByUserName(username);
-        if (user == null) return null;
+        if (user == null) throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized");
         int userId = user.getId();
 
         Profile profile = profileDao.getByUserId(userId);
-        if (profile == null) return null;
+        if (profile == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Profile is needed to checkout");
 
         ShoppingCart cart = shoppingCartDao.getByUserId(userId);
-        if (cart.getItems().isEmpty()) return null;
+        if (cart.getItems().isEmpty()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "cart is empty");
 
         Order order = new Order();
         order.setAddress(profile.getAddress());
@@ -49,6 +51,7 @@ public class OrderService {
 
         int orderId = orderCreated.getOrderId();
 
+        //adding cart items in orderItemLine
         for (ShoppingCartItem cartItem : cart.getItems().values()) {
             OrderItemLine orderItemLine = new OrderItemLine(
                     0,

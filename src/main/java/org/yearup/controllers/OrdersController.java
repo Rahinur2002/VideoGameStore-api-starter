@@ -11,7 +11,7 @@ import org.yearup.services.OrderService;
 import java.security.Principal;
 
 @RestController
-@RequestMapping ("orders")
+@RequestMapping ("/orders")
 @CrossOrigin
 public class OrdersController {
 
@@ -22,7 +22,7 @@ public class OrdersController {
         this.orderService = orderService;
     }
 
-    @PostMapping("")
+    @PostMapping()
     @PreAuthorize("hasRole('ROLE_USER')")
     @ResponseStatus(HttpStatus.CREATED)
     public Order checkout(Principal principal) {
@@ -31,6 +31,7 @@ public class OrdersController {
         if (orderCreated == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "checkout failed");
         }
+        //returning the order
         return orderCreated;
     }
 }
