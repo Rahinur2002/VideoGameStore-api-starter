@@ -38,16 +38,15 @@ public class OrderService {
         if (cart.getItems().isEmpty()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "cart is empty");
 
         Order order = new Order();
+        order.setUserId(userId);
         order.setAddress(profile.getAddress());
         order.setCity(profile.getCity());
         order.setState(profile.getState());
         order.setZip(profile.getZip());
-
-        if (order.getShippingAmount() == null)
-            order.setShippingAmount(BigDecimal.ZERO);
+        order.setShippingAmount(BigDecimal.ZERO);
 
         Order orderCreated = orderDao.createOrder(userId, order);
-        if(orderCreated == null) return null;
+        if(orderCreated == null) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "failed to create a order");
 
         int orderId = orderCreated.getOrderId();
 
@@ -65,6 +64,7 @@ public class OrderService {
             orderLineItemDao.createOrderLineItem(orderItemLine);
         }
 
+        // clearing the cart after successfully checking out
         shoppingCartDao.deleteProduct(userId);
         return orderCreated;
     }
