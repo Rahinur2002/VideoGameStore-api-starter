@@ -36,6 +36,7 @@ public class ProfileController {
 
         if (user == null)
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found.");
+        //returns the user by id
         return profileDao.getByUserId(user.getId());
     }
 
@@ -44,9 +45,11 @@ public class ProfileController {
     public Profile updateProfile(Principal principal, @RequestBody Profile profile){
         String username = principal.getName();
         User user = userDao.getByUserName(username);
+        if (user == null)
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found.");
 
         profileDao.updateProfile(user.getId(), profile);
-
+        //returns the updated profile
         return profile;
 
     }

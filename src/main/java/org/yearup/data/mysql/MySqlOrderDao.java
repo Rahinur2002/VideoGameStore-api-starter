@@ -1,6 +1,5 @@
 package org.yearup.data.mysql;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.yearup.data.OrderDao;
 import org.yearup.models.Order;
@@ -14,7 +13,6 @@ import java.sql.SQLException;
 @Component
 public class MySqlOrderDao extends MySqlDaoBase implements OrderDao {
 
-    @Autowired
     public MySqlOrderDao(DataSource dataSource) {
         super(dataSource);
     }
@@ -25,7 +23,7 @@ public class MySqlOrderDao extends MySqlDaoBase implements OrderDao {
                 "VALUES (?, NOW(), ?, ?, ?, ?, ?)";
 
 
-        try (Connection connection = dataSource.getConnection();
+        try (Connection connection = getConnection();
              PreparedStatement statement = connection.prepareStatement(createOrderSql, PreparedStatement.RETURN_GENERATED_KEYS)){
             statement.setInt(1, userId);
             statement.setString(2, order.getAddress());

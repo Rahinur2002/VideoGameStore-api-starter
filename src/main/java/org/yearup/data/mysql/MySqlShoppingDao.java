@@ -1,6 +1,5 @@
 package org.yearup.data.mysql;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.yearup.data.ShoppingCartDao;
 import org.yearup.models.*;
@@ -15,7 +14,6 @@ import java.sql.SQLException;
 @Component
 public class MySqlShoppingDao extends MySqlDaoBase implements ShoppingCartDao {
 
-    @Autowired
     public MySqlShoppingDao(DataSource dataSource)
     {
         super(dataSource);
@@ -31,7 +29,7 @@ public class MySqlShoppingDao extends MySqlDaoBase implements ShoppingCartDao {
         //Empty cart
         ShoppingCart cart = new ShoppingCart();
 
-        try (Connection connection = dataSource.getConnection();
+        try (Connection connection = getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, userId);
 
@@ -67,7 +65,7 @@ public class MySqlShoppingDao extends MySqlDaoBase implements ShoppingCartDao {
         String updateSql = "UPDATE shopping_cart SET quantity = quantity + 1 WHERE user_id = ? AND product_id = ?";
         String insertSql = "INSERT INTO shopping_cart (user_id, product_id, quantity) VALUES (?, ?, 1)";
 
-        try (Connection connection = dataSource.getConnection())
+        try (Connection connection = getConnection())
         {
             try (PreparedStatement updateStatement = connection.prepareStatement(updateSql))
             {
@@ -99,7 +97,7 @@ public class MySqlShoppingDao extends MySqlDaoBase implements ShoppingCartDao {
     public void updateCart(int userId, int productId, int quantity) {
         String sql = "UPDATE shopping_cart SET quantity = ? WHERE user_id = ? AND product_id = ?";
 
-        try (Connection connection = dataSource.getConnection();
+        try (Connection connection = getConnection();
              PreparedStatement stmt = connection.prepareStatement(sql))
         {
             stmt.setInt(1, quantity);
@@ -117,7 +115,7 @@ public class MySqlShoppingDao extends MySqlDaoBase implements ShoppingCartDao {
     public void deleteProduct(int userId) {
         String sql = "DELETE FROM shopping_cart WHERE user_id = ?";
 
-        try (Connection connection = dataSource.getConnection();
+        try (Connection connection = getConnection();
         PreparedStatement statement = connection.prepareStatement(sql)){
             statement.setInt(1, userId);
 

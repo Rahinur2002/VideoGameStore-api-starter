@@ -1,6 +1,5 @@
 package org.yearup.data.mysql;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.yearup.data.UserDao;
 import org.yearup.models.User;
@@ -14,12 +13,11 @@ import java.util.List;
 @Component
 public class MySqlUserDao extends MySqlDaoBase implements UserDao
 {
-    @Autowired
+
     public MySqlUserDao(DataSource dataSource)
     {
         super(dataSource);
     }
-
 
     @Override
     public User create(User newUser)

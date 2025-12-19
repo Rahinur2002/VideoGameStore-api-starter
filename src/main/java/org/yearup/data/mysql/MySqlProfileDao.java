@@ -1,6 +1,5 @@
 package org.yearup.data.mysql;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.yearup.models.Profile;
 import org.yearup.data.ProfileDao;
@@ -11,7 +10,7 @@ import java.sql.*;
 @Component
 public class MySqlProfileDao extends MySqlDaoBase implements ProfileDao
 {
-    @Autowired
+
     public MySqlProfileDao(DataSource dataSource)
     {
         super(dataSource);
@@ -50,7 +49,7 @@ public class MySqlProfileDao extends MySqlDaoBase implements ProfileDao
     public Profile getByUserId (int userId) {
         String sql = "SELECT * FROM profiles WHERE user_id = ?";
 
-        try (Connection connection = dataSource.getConnection();
+        try (Connection connection = getConnection();
         PreparedStatement statement = connection.prepareStatement(sql)){
             statement.setInt(1, userId);
 
@@ -77,11 +76,12 @@ public class MySqlProfileDao extends MySqlDaoBase implements ProfileDao
         return null;
     }
 
+    @Override
     public void updateProfile(int userId, Profile profile) {
         String sql = "UPDATE profiles SET first_name = ?, last_name = ?, phone = ?, email = ?, address = ?, " +
                 "city = ?, state = ?, zip = ? WHERE user_id = ?";
 
-        try (Connection connection = dataSource.getConnection();
+        try (Connection connection = getConnection();
         PreparedStatement statement = connection.prepareStatement(sql)){
             statement.setString(1, profile.getFirstName());
             statement.setString(2, profile.getLastName());

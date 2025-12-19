@@ -15,8 +15,6 @@ import java.sql.SQLException;
 @Component
 public class MySqlOrderLineItemDao extends MySqlDaoBase implements OrderLineItemDao {
 
-
-    @Autowired
     public MySqlOrderLineItemDao(DataSource dataSource) {
         super(dataSource);
     }
@@ -27,7 +25,7 @@ public class MySqlOrderLineItemDao extends MySqlDaoBase implements OrderLineItem
                 "(order_id, product_id, sales_price, quantity, discount) " +
                 "VALUES (?, ?, ?, ?, ?)";
 
-        try (Connection connection = dataSource.getConnection();
+        try (Connection connection = getConnection();
              PreparedStatement statement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)){
             statement.setInt(1, orderItemLine.getOrder_id());
             statement.setInt(2, orderItemLine.getProduct_id());
