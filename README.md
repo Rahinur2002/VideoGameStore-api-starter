@@ -2,11 +2,12 @@ Video Game Store Api
 
 ## Description of the Project
 
-The Video Game Store API is a Java spring boost REST API that is used for online video game store. It lets the user
+The Video Game Store API is a Java spring boost REST API that is used for online video game store. It lets the authenticated
+user to search through variety of products, manage shopping cart and place order in checkout. Admin users can manage
+stores product and categories.
 
 ## User Stories
 
-List the user stories that guided the development of your application. Format these stories as: "As a [type of user], I want [some goal] so that [some reason]."
 
 - As a user, I want to be able to input my data, so that the application can process it accordingly.
 - As a user, I want to receive immediate feedback, so I can understand what to do next.
