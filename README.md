@@ -9,8 +9,17 @@ stores product and categories.
 ## User Stories
 
 
-- As a user, I want to be able to input my data, so that the application can process it accordingly.
-- As a user, I want to receive immediate feedback, so I can understand what to do next.
+- As a user, I want to view all categories, so I can browse products by type.
+- As a user, I want to view a category by ID, so I can confirm its details.
+- As a user admin, I want updates to modify an existing product instead of creating a duplicate so inventory stays clean.
+- As a user admin, I want to create categories so the store can add new sections.
+- As a user admin, I want to update a category so I can fix names/descriptions
+- As a user admin, I want to delete a category so I can remove outdated sections.
+- As a user, I want to browse all products so I can choose items to buy.
+- As a user, I want product details so I can decide to purchase.
+- As a user admin, I want to remove products so customers can’t buy discontinued items.
+- As a user, I want to filter products by category, price range, and subCategory, so I can find what I want quickly.
+- As a user admin, I want to add products so the store can sell new items.
 
 ## Setup
 
@@ -33,14 +42,19 @@ Follow these steps to get your application running within IntelliJ IDEA:
 
 ## Technologies Used
 
-- Java: Mention the version you are using.
-- Any additional libraries or frameworks used in the project.
+- Java:JDK 17
+- Sprint Boost
+- Insomnia
+- Github
+- MySQL Workbench
 
 ## Demo
 
-Include screenshots or GIFs that show your application in action. Use tools like [Giphy Capture](https://giphy.com/apps/giphycapture) to record a GIF of your application.
 
-![Application Screenshot](path/to/your/screenshot.png)
+![](Image/game.png)
+![](Image/game1.png)
+![](Image/game3.png)
+
 
 ## Future Work
 
