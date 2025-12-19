@@ -60,8 +60,9 @@ Follow these steps to get your application running within IntelliJ IDEA:
 
 Outline potential future enhancements or functionalities you might consider adding:
 
-- Additional feature to be developed.
-- Improvement of current functionalities.
+- add discounts codes
+- Implement order history
+- improve error responses
 
 ## Resources
 
@@ -72,12 +73,11 @@ List resources such as tutorials, articles, or documentation that helped you dur
 
 ## Team Members
 
-- **Name 1** - Specific contributions or roles.
-- **Name 2** - Specific contributions or roles.
+- Raymond - Project Manager
 
 ## Thanks
 
 Express gratitude towards those who provided help, guidance, or resources:
 
-- Thank you to [Mentor's Name] for continuous support and guidance.
+- Thank you to Raymond, Roger and Shaheer for continuous support and guidance.
 - A special thanks to all teammates for their dedication and teamwork.
