@@ -1,8 +1,8 @@
-# Project Title
+Video Game Store Api
 
 ## Description of the Project
 
-Briefly describe what this Java console application does. Mention its purpose and who the intended users are. Explain the main functionality and what problems it aims to solve.
+The Video Game Store API is a Java spring boost REST API that is used for online video game store. It lets the user
 
 ## User Stories
 
