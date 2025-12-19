@@ -11,9 +11,9 @@ public class Order {
     private String city;
     private String state;
     private String zip;
-    private BigDecimal shipping_amount;
+    private BigDecimal shippingAmount;
 
-    public Order(int orderId, int userId, LocalDateTime date, String address, String city, String state, String zip, BigDecimal shipping_amount) {
+    public Order(int orderId, int userId, LocalDateTime date, String address, String city, String state, String zip, BigDecimal shippingAmount) {
         this.orderId = orderId;
         this.userId = userId;
         this.date = date;
@@ -21,7 +21,7 @@ public class Order {
         this.city = city;
         this.state = state;
         this.zip = zip;
-        this.shipping_amount = shipping_amount;
+        this.shippingAmount = shippingAmount;
     }
 
     public Order() {
@@ -84,11 +84,11 @@ public class Order {
         this.zip = zip;
     }
 
-    public BigDecimal getShipping_amount() {
-        return shipping_amount;
+    public BigDecimal getShippingAmount() {
+        return shippingAmount;
     }
 
-    public void setShipping_amount(BigDecimal shipping_amount) {
-        this.shipping_amount = shipping_amount;
+    public void setShippingAmount(BigDecimal shippingAmount) {
+        this.shippingAmount = shippingAmount;
     }
 }

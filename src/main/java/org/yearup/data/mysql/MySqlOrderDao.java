@@ -32,7 +32,7 @@ public class MySqlOrderDao extends MySqlDaoBase implements OrderDao {
             statement.setString(3, order.getCity());
             statement.setString(4, order.getState());
             statement.setString(5, order.getZip());
-            statement.setBigDecimal(6, order.getShipping_amount());
+            statement.setBigDecimal(6, order.getShippingAmount());
 
             int rowsAffected = statement.executeUpdate();
 
@@ -41,7 +41,7 @@ public class MySqlOrderDao extends MySqlDaoBase implements OrderDao {
 
                 if (generatedKeys.next()) {
                     int orderId = generatedKeys.getInt(1);
-                    order.setOrderid(orderId);
+                    order.setOrderId(orderId);
 
                     return order;
                     }

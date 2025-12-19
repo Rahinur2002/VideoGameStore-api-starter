@@ -41,25 +41,23 @@ public class OrderService {
         order.setState(profile.getState());
         order.setZip(profile.getZip());
 
-        if (order.getShipping_amount() == null)
-            order.setShipping_amount(BigDecimal.ZERO);
+        if (order.getShippingAmount() == null)
+            order.setShippingAmount(BigDecimal.ZERO);
 
         Order orderCreated = orderDao.createOrder(userId, order);
         if(orderCreated == null) return null;
 
-        int orderid = orderCreated.getOrderid();
+        int orderId = orderCreated.getOrderId();
 
         for (ShoppingCartItem cartItem : cart.getItems().values()) {
             OrderItemLine orderItemLine = new OrderItemLine(
                     0,
-                    orderid,
+                    orderId,
                     cartItem.getProductId(),
                     cartItem.getProduct().getPrice(),
                     cartItem.getQuantity(),
                     cartItem.getDiscountPercent()
             );
-
-            int productId = cartItem.getProductId();
 
             orderLineItemDao.createOrderLineItem(orderItemLine);
         }
